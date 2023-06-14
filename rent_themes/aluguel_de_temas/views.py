@@ -93,8 +93,6 @@ class RentViews:
         return render(request, 'rent/formRent.html', context)
     
     def saveRent(request):
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        print(request.POST)
         AluguelDAO.salvaAluguel(request.POST)
         return redirect('/listRent')
 
