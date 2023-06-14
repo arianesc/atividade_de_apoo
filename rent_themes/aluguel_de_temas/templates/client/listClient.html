@@ -1,0 +1,30 @@
+{% extends "index.html" %} 
+    {% block content %}
+    <p></p>
+        <h3>Lista de Clientes</h3>
+        <hr>
+        <table class="table table-striped">
+            {% if clients_list %}
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Ações</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                {% for client in clients_list%}
+                    <tr>
+                        <td>{{client.id}}</td>
+                        <td>{{client.name}}</td>
+                        <td width='80'><a href="/deleteClient/{{client.id}}">Excluir</a></td>
+                        <td><a href="/detailClient/{{client.id}}">Editar</a></td>
+                        
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum cliente cadastrado!!</p>
+            {%endif%}
+        </table>
+        <a  class="btn btn-primary" href="/formClient">Novo Cliente</a>
+    {% endblock %}
