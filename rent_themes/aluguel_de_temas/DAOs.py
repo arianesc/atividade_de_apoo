@@ -107,18 +107,18 @@ class ItemDAO:  # ENTIDADE IMPORTANTE P/ ATIVIDADE
         i.save()
 
 
-class AluguelDAO:
+class RentDAO:
     def listaAlugueis():
         lista_alugueis = Rent.objects.all()
         return lista_alugueis
 
-    def salvaAluguel(dados):
-        e = Address(street=dados['street'], number=dados['number'], complement=dados['complement'],
-                     district=dados['district'], city=dados['city'], state=dados['state'], cep=dados['cep'])
+    def saveRent(street, number, complement, district, city, state, cep, date, start_hours, end_hours, select_client, select_theme):
+        e = Address(street=street, number=number, complement=complement,
+                     district=district, city=city, state=state, cep=cep)
         e.save()
 
-        a = Rent(date=dados['date'], start_hours=dados['start_hours'], end_hours=dados['end_hours'],
-                    client_id=dados['select_client'], theme_id=dados['select_theme'], address=e)
+        a = Rent(date=date, start_hours=start_hours, end_hours=end_hours,
+                    client_id=select_client, theme_id=select_theme, address=e)
         a.save()
 
     def deletaAluguel(id):
