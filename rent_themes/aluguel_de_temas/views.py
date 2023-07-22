@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import *
 from .DAOs import *
-
+from.BusinessObject import BusinessObject
 def index(request):
     return render(request, 'index.html')
 
@@ -83,7 +83,7 @@ class ItemViews:
 class RentViews:
     
     def listRent(request):
-        context = {'rent_list': AluguelDAO.listaAlugueis()}
+        context = {'rent_list': RentDAO.listaAlugueis()}
         return render(request, 'rent/listRent.html', context) 
     
     def formRent(request):
@@ -93,17 +93,25 @@ class RentViews:
         return render(request, 'rent/formRent.html', context)
     
     def saveRent(request):
-        AluguelDAO.salvaAluguel(request.POST)
+        data = request.POST
+
+        RentDAO.saveRent(data['street'], data['number'], data['complement'],
+                                data['district'], data['city'], data['state'], data['cep'],
+                                data['date'], data['start_hours'], data['end_hours'],
+                                data['select_client'], data['select_theme'])
+
+        discount = BusinessObject.discountCalc(data['date'])
+        # O models aluguel nao tem valor, onde aplica o desconto? no tema?
         return redirect('/listRent')
 
     def deleteRent(request, id):
-        AluguelDAO.deletaAluguel(id)
+        RentDAO.deletaAluguel(id)
         return redirect('/listRent')
     
     def detailRent(request, id):
-        rent = AluguelDAO.detalheAluguel(id)
+        rent = RentDAO.detalheAluguel(id)
         return render(request, 'rent/formEditRent.html', {'rent': rent})
     
     def updateRent(request, id):
-        AluguelDAO.atualizaAluguel(request.POST, id)
+        RentDAO.atualizaAluguel(request.POST, id)
         return redirect('/listRent')
