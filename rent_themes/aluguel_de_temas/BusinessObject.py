@@ -1,5 +1,10 @@
+from datetime import datetime
 
 class BusinessObject:
     def discountCalc(data):
-        # calcular desconto com base no dia da semana?
-        pass
+        data = datetime.strptime(data, '%Y-%m-%d')
+        weekday = data.weekday()
+        if weekday < 4:
+            return 10
+        return 0
+

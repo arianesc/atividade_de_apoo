@@ -112,13 +112,16 @@ class RentDAO:
         lista_alugueis = Rent.objects.all()
         return lista_alugueis
 
-    def saveRent(street, number, complement, district, city, state, cep, date, start_hours, end_hours, select_client, select_theme):
+    def saveRent(street, number, complement, district, city, state, cep, date, start_hours, end_hours, select_client, select_theme, discount):
         e = Address(street=street, number=number, complement=complement,
                      district=district, city=city, state=state, cep=cep)
         e.save()
 
         a = Rent(date=date, start_hours=start_hours, end_hours=end_hours,
                     client_id=select_client, theme_id=select_theme, address=e)
+
+        a.price = a.theme.price - discount
+
         a.save()
 
     def deletaAluguel(id):
@@ -128,11 +131,12 @@ class RentDAO:
     def detalheAluguel(id):
         return Rent.objects.get(pk=id)
 
-    def atualizaAluguel(dados, id):
+    def atualizaAluguel(dados, id, discount):
         a = Rent.objects.get(pk=id)
         a.date = dados['date']
         a.start_hours = dados['start_hours']
         a.end_hours = dados['end_hours']
+        a.price = a.theme.price - discount
 
         end = a.address
         if not end:

@@ -41,7 +41,8 @@ class Rent(models.Model):
     client = models.ForeignKey('Client', on_delete=CASCADE, related_name='rents')
     theme = models.ForeignKey('Theme', on_delete=CASCADE, related_name='rents')
     address = models.OneToOneField('Address', on_delete=models.CASCADE, null=True)
-    
+    price = models.FloatField(default=0)
+
     def __str__(self):
         return str(self.date) + ' ' + self.client.name + ' ' + self.theme.name
     

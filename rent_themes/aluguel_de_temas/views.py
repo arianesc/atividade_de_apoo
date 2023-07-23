@@ -94,14 +94,12 @@ class RentViews:
     
     def saveRent(request):
         data = request.POST
+        discount = BusinessObject.discountCalc(data['date'])
 
         RentDAO.saveRent(data['street'], data['number'], data['complement'],
                                 data['district'], data['city'], data['state'], data['cep'],
                                 data['date'], data['start_hours'], data['end_hours'],
-                                data['select_client'], data['select_theme'])
-
-        discount = BusinessObject.discountCalc(data['date'])
-        # O models aluguel nao tem valor, onde aplica o desconto? no tema?
+                                data['select_client'], data['select_theme'], discount)
         return redirect('/listRent')
 
     def deleteRent(request, id):
@@ -113,5 +111,6 @@ class RentViews:
         return render(request, 'rent/formEditRent.html', {'rent': rent})
     
     def updateRent(request, id):
-        RentDAO.atualizaAluguel(request.POST, id)
+        discount = BusinessObject.discountCalc(request.POST['date'])
+        RentDAO.atualizaAluguel(request.POST, id, discount)
         return redirect('/listRent')
